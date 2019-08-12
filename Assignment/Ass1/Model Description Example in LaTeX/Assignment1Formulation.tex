@@ -1,0 +1,48 @@
+\documentclass{article}
+
+\usepackage{amsmath,amssymb,fullpage}
+\setlength\parindent{0pt}
+\begin{document}
+	\section*{Relit Fires}
+	\subsection*{Sets}
+	
+	\begin{tabular}{rl}
+		$L$ & Set of locations\\
+		$T$ & Set of time periods (quarters)
+	\end{tabular}
+
+	\subsection*{Data}
+	
+	\begin{tabular}{rl}
+		$c_t$ & Cost per tonne of fertiliser in time $t\in T$\\
+		$d_{lt}$ & Demand at location $l\in L$ in time $t\in T$\\
+		$u$ & Capacity of ship\\
+		$g_l$ & Initial amount in storage at location $l\in L$\\
+		$p$ & Storage cost per tonne per quarter\\
+		$w_l$ & Capacity of warehouse in location $l\in L$
+	\end{tabular}
+
+	\subsection*{Variables}
+	
+	\begin{tabular}{rl}
+		$x_{lt}$ & How much fertiliser is delivered to location $l\in L$ during quarter $t\in T$\\
+		$s_{lt}$ & How much fertiliser is stored in location $l\in L$ at the end of quarter $t\in T$
+	\end{tabular}
+
+	\subsection*{Objective}
+	\begin{equation*}
+	\min \sum_{l\in L}\sum_{t\in T}(c_t x_{lt} + ps_{lt})
+	\end{equation*}
+	
+	\subsection*{Constraints}
+	\begin{align}
+		\sum_{l\in L} x_{lt} \leq u && \forall t\in T\label{C1}\\
+		s_{lt} = s_{lt-1} - d_{lt} + x_{lt} && \forall l\in L, \forall t\in T\setminus \{0\}\label{C2}\\
+		s_{l0} = g_l - d_{l0} + x_{l0} && \forall l\in L\label{C3}\\
+		s_{l7} = g_l && \forall l \in L\label{C4}\\
+		s_{lt} \leq w_l && \forall l \in L\label{C5}\\
+		x_{lt}\geq 0, s_{lt}\geq 0 && \forall l \in L, \forall t\in T\label{C6}
+	\end{align}
+	
+	Constraints (\ref{C1}) ensure that no more fertiliser is ordered than can be carried on the ship. Constraints (\ref{C2}-\ref{C3}) keep track of the inventory, ensuring that unused fertiliser is carried over to the next quarter. Constraints (\ref{C4}) require that there must be as much fertiliser in storage at the end of the planning period as there is at the start, and the maximum capacity of the storage warehouses is enforced by constraints (\ref{C5}). Finally, constraints (\ref{C6}) ensure that the amounts delivered and stored will be non-negative.
+\end{document}
